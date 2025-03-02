@@ -1,0 +1,6 @@
+*.log
+*.db*
+gitea/*
+heimdall/config/php
+heimdall/config/nginx
+heimdall/config/log
