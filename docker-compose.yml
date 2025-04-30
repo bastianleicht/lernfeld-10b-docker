@@ -1,180 +1,184 @@
-version: '3'
+version: '3' # Version der Docker Compose-Konfiguration
 
 services:
   # Nextcloud für Dateiaustausch
+  # admin / admin
+  # Datenbank:
+  # nextcloud_db
+  # 
   nextcloud:
-    image: lscr.io/linuxserver/nextcloud:latest
-    container_name: nextcloud
+    image: lscr.io/linuxserver/nextcloud:latest # Docker-Image für Nextcloud
+    container_name: nextcloud # Name des Containers
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Berlin
+      - PUID=1000 # Benutzer-ID für den Nextcloud-Container
+      - PGID=1000 # Gruppen-ID für den Nextcloud-Container
+      - TZ=Europe/Berlin # Zeitzone für den Nextcloud-Container
     volumes:
-      - ./nextcloud/config:/config
-      - ./nextcloud/data:/data
+      - ./nextcloud/config:/config # Volumes: Konfigurationsdateien speichern
+      - ./nextcloud/data:/data # Volumes: Daten von Nextcloud speichern
     networks:
-      - proxy-net
-    restart: unless-stopped
+      - proxy-net # Netzwerk, das der Container verwenden soll
+    restart: unless-stopped # Container wird bei Fehlern neu gestartet
 
   # FTP-Server für Backups
   ftp:
-    image: stilliard/pure-ftpd:latest
-    container_name: ftp
+    image: stilliard/pure-ftpd:latest # Docker-Image für den FTP-Server
+    container_name: ftp # Name des FTP-Containers
     environment:
-      - PUBLICHOST=localhost
-      - FTP_USER_NAME=backup_user
-      - FTP_USER_PASS=sicheresPasswort123
-      - FTP_USER_HOME=/home/backup_user
+      - PUBLICHOST=localhost # Die öffentliche Adresse des FTP-Servers
+      - FTP_USER_NAME=backup_user # Benutzername für den FTP-Zugang
+      - FTP_USER_PASS=sicheresPasswort123 # Passwort für den FTP-Benutzer
+      - FTP_USER_HOME=/home/backup_user # Heimatverzeichnis des FTP-Benutzers
     volumes:
-      - ./duplicati/backups:/home/backup_user/backups
+      - ./duplicati/backups:/home/backup_user/backups # Volumes für Backups
     ports:
-      - "21:21"
-      - "30000-30009:30000-30009"
+      - "21:21" # FTP-Port
+      - "30000-30009:30000-30009" # Passive Ports für FTP
     networks:
-      - proxy-net
-    restart: unless-stopped
+      - proxy-net # Netzwerk für den FTP-Container
+    restart: unless-stopped # Container wird bei Fehlern neu gestartet
 
   # Duplicati für Backups
-  # http://10.145.240.56:8200/ngax/index.html#/
   duplicati:
-    image: duplicati/duplicati:latest
-    container_name: duplicati
+    image: duplicati/duplicati:latest # Docker-Image für Duplicati
+    container_name: duplicati # Name des Duplicati-Containers
     environment:
-      - TZ=Europe/Berlin
-      - DUPLICATI_OPTIONS=--webservice-interface=any --server-allowed-hostnames=*
+      - TZ=Europe/Berlin # Zeitzone für den Duplicati-Container
+      - DUPLICATI_OPTIONS=--webservice-interface=any --server-allowed-hostnames=* # Optionen für den Duplicati-Webservice
     volumes:
-      - ./duplicati/config:/data
-      - ./duplicati/backups:/backups
-      - ./nextcloud/data:/source/nextcloud:ro
+      - ./duplicati/config:/data # Volumes: Konfigurationsdateien für Duplicati speichern
+      - ./duplicati/backups:/backups # Volumes: Backup-Daten speichern
+      - ./nextcloud/data:/source/nextcloud:ro # Volumes: Nextcloud-Daten im Nur-Lese-Modus
     ports:
-      - "8200:8200"
+      - "8200:8200" # Web-Oberfläche von Duplicati erreichbar auf Port 8200
     networks:
-      - proxy-net
-    restart: unless-stopped
+      - proxy-net # Netzwerk für den Duplicati-Container
+    restart: unless-stopped # Container wird bei Fehlern neu gestartet
 
   # Homarr Dashboard
   # admin / Admin123!
   homarr:
-    image: ghcr.io/ajnart/homarr:latest
-    container_name: homarr
-    restart: unless-stopped
+    image: ghcr.io/ajnart/homarr:latest # Docker-Image für das Homarr Dashboard
+    container_name: homarr # Name des Containers
+    restart: unless-stopped # Container wird bei Fehlern neu gestartet
     ports:
-      - "7575:7575"
+      - "7575:7575" # Web-Oberfläche von Homarr auf Port 7575 verfügbar
     volumes:
-      - ./config:/app/data/configs
-      - ./icons:/app/public/icons
+      - ./config:/app/data/configs # Volumes: Konfigurationsdateien für Homarr speichern
+      - ./icons:/app/public/icons # Volumes: Icons für Homarr speichern
     networks:
-      - proxy-net
+      - proxy-net # Netzwerk für den Homarr-Container
 
   # Heimdall Dashboard
   heimdall:
-    image: lscr.io/linuxserver/heimdall:latest
-    container_name: heimdall
+    image: lscr.io/linuxserver/heimdall:latest # Docker-Image für das Heimdall Dashboard
+    container_name: heimdall # Name des Containers
     environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Europe/Berlin
+      - PUID=1000 # Benutzer-ID für den Heimdall-Container
+      - PGID=1000 # Gruppen-ID für den Heimdall-Container
+      - TZ=Europe/Berlin # Zeitzone für den Heimdall-Container
     volumes:
-      - ./heimdall/config:/config
+      - ./heimdall/config:/config # Volumes: Konfigurationsdateien für Heimdall speichern
     networks:
-      - proxy-net
-    restart: unless-stopped
+      - proxy-net # Netzwerk für den Heimdall-Container
+    restart: unless-stopped # Container wird bei Fehlern neu gestartet
 
   # Uptime Kuma für Monitoring
   # admin / admin!
   uptime-kuma:
-    image: louislam/uptime-kuma:1
-    container_name: uptime-kuma
+    image: louislam/uptime-kuma:1 # Docker-Image für Uptime Kuma (Monitoring)
+    container_name: uptime-kuma # Name des Containers
     volumes:
-      - ./uptime-kuma/data:/app/data
+      - ./uptime-kuma/data:/app/data # Volumes: Daten für Uptime Kuma speichern
     networks:
-      - proxy-net
-    restart: unless-stopped
+      - proxy-net # Netzwerk für den Uptime Kuma-Container
+    restart: unless-stopped # Container wird bei Fehlern neu gestartet
 
   # Nginx Proxy Manager als Reverse Proxy
   # admin@example.com / changeme
   nginx-proxy-manager:
-    image: 'jc21/nginx-proxy-manager:latest'
-    container_name: nginx-proxy-manager
+    image: 'jc21/nginx-proxy-manager:latest' # Docker-Image für Nginx Proxy Manager
+    container_name: nginx-proxy-manager # Name des Containers
     ports:
-      - '80:80'
-      - '443:443'
-      - '81:81'
+      - '80:80' # HTTP-Port
+      - '443:443' # HTTPS-Port
+      - '81:81' # Admin-Panel von Nginx Proxy Manager auf Port 81
     volumes:
-      - ./npm/data:/data
-      - ./npm/letsencrypt:/etc/letsencrypt
+      - ./npm/data:/data # Volumes: Daten für Nginx Proxy Manager speichern
+      - ./npm/letsencrypt:/etc/letsencrypt # Volumes: SSL-Zertifikate speichern
     networks:
-      - proxy-net
-    restart: unless-stopped
+      - proxy-net # Netzwerk für den Nginx Proxy Manager-Container
+    restart: unless-stopped # Container wird bei Fehlern neu gestartet
 
   # Gitea als Git-Server
+  # admin / admin
   gitea:
-    image: gitea/gitea:latest
-    container_name: gitea
+    image: gitea/gitea:latest # Docker-Image für Gitea
+    container_name: gitea # Name des Containers
     environment:
-      - USER_UID=1000
-      - USER_GID=1000
-      - TZ=Europe/Berlin
+      - USER_UID=1000 # Benutzer-ID für den Gitea-Container
+      - USER_GID=1000 # Gruppen-ID für den Gitea-Container
+      - TZ=Europe/Berlin # Zeitzone für den Gitea-Container
     volumes:
       - ./gitea/data:/data
       - ./gitea/config:/etc/gitea
     ports:
-      - "3003:3000"
-      - "222:22"
+      - "3003:3000" # Gitea-Web-Oberfläche auf Port 3003
+      - "222:22" # SSH-Zugang für Gitea auf Port 222
     networks:
-      - proxy-net
-    restart: unless-stopped
+      - proxy-net # Netzwerk für den Gitea-Container
+    restart: unless-stopped # Container wird bei Fehlern neu gestartet
 
   # OpenVPN Server
   # docker-compose run --rm openvpn ovpn_genconfig -u udp://10.145.240.56
   # docker-compose run --rm openvpn ovpn_initpki
   # Passphrase: test123
   openvpn:
-    image: kylemanna/openvpn
-    container_name: openvpn
+    image: kylemanna/openvpn # Docker-Image für OpenVPN
+    container_name: openvpn # Name des Containers
     cap_add:
-      - NET_ADMIN
+      - NET_ADMIN # Erforderliche Berechtigung für Netzwerkadministration
     volumes:
-      - ./openvpn/config:/etc/openvpn
+      - ./openvpn/config:/etc/openvpn # Volumes: OpenVPN-Konfiguration speichern
     ports:
-      - "1194:1194/udp"
+      - "1194:1194/udp" # OpenVPN-Port für UDP-Verkehr
     networks:
-      - proxy-net
-    restart: unless-stopped
+      - proxy-net # Netzwerk für den OpenVPN-Container
+    restart: unless-stopped # Container wird bei Fehlern neu gestartet
 
   # Minecraft Server
   minecraft:
-    image: itzg/minecraft-server
-    container_name: minecraft
+    image: itzg/minecraft-server # Docker-Image für den Minecraft-Server
+    container_name: minecraft # Name des Containers
     environment:
-      - EULA=TRUE
-      - MEMORY=2G
-      - TZ=Europe/Berlin
+      - EULA=TRUE # Akzeptiere die Endbenutzer-Lizenzvereinbarung (EULA)
+      - MEMORY=4G # Zugeteilten RAM für den Minecraft-Server
+      - TZ=Europe/Berlin # Zeitzone für den Minecraft-Server
     volumes:
-      - ./minecraft/data:/data
+      - ./minecraft/data:/data # Volumes: Minecraft-Daten speichern
     ports:
-      - "25565:25565"
+      - "25565:25565" # Minecraft-Server über Port 25565 erreichbar
     networks:
-      - proxy-net
-    restart: unless-stopped
+      - proxy-net # Netzwerk für den Minecraft-Container
+    restart: unless-stopped # Container wird bei Fehlern neu gestartet
 
   # WikiJS als Dokumentationssystem
   # admin@admin.de / admin123
   wiki:
-    image: requarks/wiki:2
-    container_name: wiki
+    image: requarks/wiki:2 # Docker-Image für WikiJS
+    container_name: wiki # Name des Containers
     environment:
-      - DB_TYPE=sqlite
-      - TZ=Europe/Berlin
+      - DB_TYPE=sqlite # Verwendung von SQLite als Datenbank
+      - TZ=Europe/Berlin # Zeitzone für den WikiJS-Container
     volumes:
-      - ./wiki/config:/config
-      - ./wiki/data:/data
+      - ./wiki/config:/config # Volumes: Konfiguration für WikiJS speichern
+      - ./wiki/data:/data # Volumes: WikiJS-Daten speichern
     ports:
-      - "3001:3000"
+      - "3001:3000"  # Web-Oberfläche von WikiJS erreichbar auf Port 3001
     networks:
-      - proxy-net
-    restart: unless-stopped
+      - proxy-net # Netzwerk für den WikiJS-Container
+    restart: unless-stopped # Container wird bei Fehlern neu gestartet
 
 networks:
   proxy-net:
-    driver: bridge
+    driver: bridge # Netzwerktyp für die Container (Bridge-Netzwerk)
