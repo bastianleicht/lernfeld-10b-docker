@@ -1,0 +1,513 @@
+{
+  "schemaVersion": 2,
+  "configProperties": {
+    "name": "default"
+  },
+  "categories": [],
+  "wrappers": [
+    {
+      "id": "default",
+      "position": 0
+    }
+  ],
+  "apps": [
+    {
+      "id": "81520940-9f2d-422d-9a1a-c074f0540653",
+      "name": "Uptime Kuma",
+      "url": "http://monitor.local",
+      "appearance": {
+        "iconUrl": "https://cdn.jsdelivr.net/gh/loganmarchione/homelab-svg-assets/assets/uptimekuma.svg",
+        "appNameStatus": "normal",
+        "positionAppName": "column",
+        "lineClampAppName": 1,
+        "appNameFontSize": 16
+      },
+      "network": {
+        "enabledStatusChecker": true,
+        "statusCodes": [
+          "200",
+          "301",
+          "302",
+          "304",
+          "307",
+          "308"
+        ]
+      },
+      "behaviour": {
+        "isOpeningNewTab": true,
+        "externalUrl": "http://monitor.local"
+      },
+      "area": {
+        "type": "wrapper",
+        "properties": {
+          "id": "default"
+        }
+      },
+      "shape": {
+        "lg": {
+          "location": {
+            "x": 2,
+            "y": 1
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        }
+      },
+      "integration": {
+        "type": null,
+        "properties": []
+      }
+    },
+    {
+      "id": "614ca7d0-fa0e-41db-a007-45bc3b8fae01",
+      "name": "Nginx Proxy Management",
+      "url": "http://10.145.240.56:81",
+      "appearance": {
+        "iconUrl": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/nginx-proxy-manager.svg",
+        "appNameStatus": "normal",
+        "positionAppName": "column",
+        "lineClampAppName": 1,
+        "appNameFontSize": 16
+      },
+      "network": {
+        "enabledStatusChecker": true,
+        "statusCodes": [
+          "200",
+          "301",
+          "302",
+          "304",
+          "307",
+          "308"
+        ]
+      },
+      "behaviour": {
+        "isOpeningNewTab": true,
+        "externalUrl": "http://10.145.240.56:81"
+      },
+      "area": {
+        "type": "wrapper",
+        "properties": {
+          "id": "default"
+        }
+      },
+      "shape": {
+        "lg": {
+          "location": {
+            "x": 1,
+            "y": 1
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        }
+      },
+      "integration": {
+        "type": null,
+        "properties": []
+      }
+    },
+    {
+      "id": "0dff07ff-e5f1-450c-839b-4b38433f3aa9",
+      "name": "Nextcloud",
+      "url": "http://nextcloud.local",
+      "appearance": {
+        "iconUrl": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/nextcloud-blue.svg",
+        "appNameStatus": "normal",
+        "positionAppName": "column",
+        "lineClampAppName": 1,
+        "appNameFontSize": 16
+      },
+      "network": {
+        "enabledStatusChecker": true,
+        "statusCodes": [
+          "200",
+          "301",
+          "302",
+          "304",
+          "307",
+          "308"
+        ]
+      },
+      "behaviour": {
+        "isOpeningNewTab": true,
+        "externalUrl": "http://nextcloud.local"
+      },
+      "area": {
+        "type": "wrapper",
+        "properties": {
+          "id": "default"
+        }
+      },
+      "shape": {
+        "lg": {
+          "location": {
+            "x": 0,
+            "y": 1
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        }
+      },
+      "integration": {
+        "type": null,
+        "properties": []
+      }
+    },
+    {
+      "id": "47af36c0-47c1-4e5b-bfc7-ad645ee6a990",
+      "name": "Donate",
+      "url": "https://spenden.afd.de",
+      "behaviour": {
+        "onClickUrl": "https://ko-fi.com/ajnart",
+        "externalUrl": "https://spenden.afd.de/",
+        "isOpeningNewTab": true,
+        "tooltipDescription": "Please consider making a donation"
+      },
+      "network": {
+        "enabledStatusChecker": false,
+        "statusCodes": [
+          "200"
+        ]
+      },
+      "appearance": {
+        "iconUrl": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons@master/png/ko-fi.png",
+        "appNameStatus": "normal",
+        "positionAppName": "row-reverse",
+        "lineClampAppName": 1,
+        "appNameFontSize": 16
+      },
+      "integration": {
+        "type": null,
+        "properties": []
+      },
+      "area": {
+        "type": "wrapper",
+        "properties": {
+          "id": "default"
+        }
+      },
+      "shape": {
+        "md": {
+          "location": {
+            "x": 4,
+            "y": 1
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        },
+        "sm": {
+          "location": {
+            "x": 2,
+            "y": 4
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        },
+        "lg": {
+          "location": {
+            "x": 3,
+            "y": 0
+          },
+          "size": {
+            "width": 2,
+            "height": 1
+          }
+        }
+      }
+    },
+    {
+      "id": "a4f0d624-fa65-4de9-b487-0a42f8beda68",
+      "name": "Monitoring",
+      "url": "http://monitor.local/status/athlon",
+      "appearance": {
+        "iconUrl": "https://cdn.jsdelivr.net/gh/loganmarchione/homelab-svg-assets/assets/uptimekuma.svg",
+        "appNameStatus": "normal",
+        "positionAppName": "column",
+        "lineClampAppName": 1,
+        "appNameFontSize": 16
+      },
+      "network": {
+        "enabledStatusChecker": true,
+        "statusCodes": [
+          "200",
+          "301",
+          "302",
+          "304",
+          "307",
+          "308"
+        ]
+      },
+      "behaviour": {
+        "isOpeningNewTab": true,
+        "externalUrl": "http://monitor.local/status/athlon"
+      },
+      "area": {
+        "type": "wrapper",
+        "properties": {
+          "id": "default"
+        }
+      },
+      "shape": {
+        "lg": {
+          "location": {
+            "x": 3,
+            "y": 1
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        }
+      },
+      "integration": {
+        "type": null,
+        "properties": []
+      }
+    },
+    {
+      "id": "464f81e5-be66-4ecb-85f9-335119f0a92f",
+      "name": "Duplicati",
+      "url": "http://backup.local",
+      "appearance": {
+        "iconUrl": "https://cdn.jsdelivr.net/gh/walkxcode/dashboard-icons/svg/duplicati.svg",
+        "appNameStatus": "normal",
+        "positionAppName": "column",
+        "lineClampAppName": 1,
+        "appNameFontSize": 16
+      },
+      "network": {
+        "enabledStatusChecker": true,
+        "statusCodes": [
+          "200",
+          "301",
+          "302",
+          "304",
+          "307",
+          "308"
+        ]
+      },
+      "behaviour": {
+        "isOpeningNewTab": true,
+        "externalUrl": "http://backup.local"
+      },
+      "area": {
+        "type": "wrapper",
+        "properties": {
+          "id": "default"
+        }
+      },
+      "shape": {
+        "lg": {
+          "location": {
+            "x": 4,
+            "y": 1
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        }
+      },
+      "integration": {
+        "type": null,
+        "properties": []
+      }
+    }
+  ],
+  "widgets": [
+    {
+      "id": "737ffb34-6879-416b-8d96-f76c00c28e35",
+      "type": "date",
+      "properties": {
+        "timezone": "Europe/Berlin",
+        "customTitle": "",
+        "display24HourFormat": false,
+        "dateFormat": "dddd, MMMM D",
+        "titleState": "both"
+      },
+      "area": {
+        "type": "wrapper",
+        "properties": {
+          "id": "default"
+        }
+      },
+      "shape": {
+        "sm": {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        },
+        "md": {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        },
+        "lg": {
+          "location": {
+            "x": 2,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        }
+      }
+    },
+    {
+      "id": "e3004052-6b83-480e-b458-56e8ccdca5f0",
+      "type": "weather",
+      "properties": {
+        "displayInFahrenheit": false,
+        "location": {
+          "name": "Frankfurt am Main",
+          "latitude": 50.11552,
+          "longitude": 8.68417
+        },
+        "displayCityName": true,
+        "displayWeekly": false,
+        "forecastDays": 5
+      },
+      "area": {
+        "type": "wrapper",
+        "properties": {
+          "id": "default"
+        }
+      },
+      "shape": {
+        "md": {
+          "location": {
+            "x": 5,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        },
+        "sm": {
+          "location": {
+            "x": 2,
+            "y": 0
+          },
+          "size": {
+            "width": 1,
+            "height": 1
+          }
+        },
+        "lg": {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "size": {
+            "width": 2,
+            "height": 1
+          }
+        }
+      }
+    },
+    {
+      "id": "c0601cdf-1cce-47eb-b8ac-3e61f5fff9af",
+      "type": "dlspeed",
+      "properties": {},
+      "area": {
+        "type": "wrapper",
+        "properties": {
+          "id": "default"
+        }
+      },
+      "shape": {
+        "sm": {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "size": {
+            "width": 2,
+            "height": 2
+          }
+        },
+        "md": {
+          "location": {
+            "x": 0,
+            "y": 0
+          },
+          "size": {
+            "width": 2,
+            "height": 2
+          }
+        },
+        "lg": {
+          "location": {
+            "x": 5,
+            "y": 0
+          },
+          "size": {
+            "width": 2,
+            "height": 2
+          }
+        }
+      }
+    }
+  ],
+  "settings": {
+    "common": {
+      "searchEngine": {
+        "type": "google",
+        "properties": {}
+      }
+    },
+    "customization": {
+      "layout": {
+        "enabledLeftSidebar": false,
+        "enabledRightSidebar": false,
+        "enabledDocker": false,
+        "enabledPing": false,
+        "enabledSearchbar": true
+      },
+      "pageTitle": "Homarr ⭐️",
+      "logoImageUrl": "/imgs/logo/logo.png",
+      "faviconUrl": "/imgs/favicon/favicon-squared.png",
+      "backgroundImageUrl": "https://www.pixground.com/wp-content/uploads/2023/06/Blue-Abstract-Background-4K-Wallpaper-1081x608.jpg",
+      "customCss": "",
+      "colors": {
+        "primary": "red",
+        "secondary": "yellow",
+        "shade": 7
+      },
+      "appOpacity": 100,
+      "gridstack": {
+        "columnCountSmall": 3,
+        "columnCountMedium": 6,
+        "columnCountLarge": 10
+      },
+      "backgroundImageAttachment": "fixed",
+      "backgroundImageRepeat": "no-repeat",
+      "backgroundImageSize": "cover",
+      "metaTitle": ""
+    },
+    "access": {
+      "allowGuests": false
+    }
+  }
+}

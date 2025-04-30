@@ -1,0 +1,180 @@
+version: '3'
+
+services:
+  # Nextcloud für Dateiaustausch
+  nextcloud:
+    image: lscr.io/linuxserver/nextcloud:latest
+    container_name: nextcloud
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - ./nextcloud/config:/config
+      - ./nextcloud/data:/data
+    networks:
+      - proxy-net
+    restart: unless-stopped
+
+  # FTP-Server für Backups
+  ftp:
+    image: stilliard/pure-ftpd:latest
+    container_name: ftp
+    environment:
+      - PUBLICHOST=localhost
+      - FTP_USER_NAME=backup_user
+      - FTP_USER_PASS=sicheresPasswort123
+      - FTP_USER_HOME=/home/backup_user
+    volumes:
+      - ./duplicati/backups:/home/backup_user/backups
+    ports:
+      - "21:21"
+      - "30000-30009:30000-30009"
+    networks:
+      - proxy-net
+    restart: unless-stopped
+
+  # Duplicati für Backups
+  # http://10.145.240.56:8200/ngax/index.html#/
+  duplicati:
+    image: duplicati/duplicati:latest
+    container_name: duplicati
+    environment:
+      - TZ=Europe/Berlin
+      - DUPLICATI_OPTIONS=--webservice-interface=any --server-allowed-hostnames=*
+    volumes:
+      - ./duplicati/config:/data
+      - ./duplicati/backups:/backups
+      - ./nextcloud/data:/source/nextcloud:ro
+    ports:
+      - "8200:8200"
+    networks:
+      - proxy-net
+    restart: unless-stopped
+
+  # Homarr Dashboard
+  # admin / Admin123!
+  homarr:
+    image: ghcr.io/ajnart/homarr:latest
+    container_name: homarr
+    restart: unless-stopped
+    ports:
+      - "7575:7575"
+    volumes:
+      - ./config:/app/data/configs
+      - ./icons:/app/public/icons
+    networks:
+      - proxy-net
+
+  # Heimdall Dashboard
+  heimdall:
+    image: lscr.io/linuxserver/heimdall:latest
+    container_name: heimdall
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - ./heimdall/config:/config
+    networks:
+      - proxy-net
+    restart: unless-stopped
+
+  # Uptime Kuma für Monitoring
+  # admin / admin!
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: uptime-kuma
+    volumes:
+      - ./uptime-kuma/data:/app/data
+    networks:
+      - proxy-net
+    restart: unless-stopped
+
+  # Nginx Proxy Manager als Reverse Proxy
+  # admin@example.com / changeme
+  nginx-proxy-manager:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
+    ports:
+      - '80:80'
+      - '443:443'
+      - '81:81'
+    volumes:
+      - ./npm/data:/data
+      - ./npm/letsencrypt:/etc/letsencrypt
+    networks:
+      - proxy-net
+    restart: unless-stopped
+
+  # Gitea als Git-Server
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - ./gitea/data:/data
+      - ./gitea/config:/etc/gitea
+    ports:
+      - "3003:3000"
+      - "222:22"
+    networks:
+      - proxy-net
+    restart: unless-stopped
+
+  # OpenVPN Server
+  # docker-compose run --rm openvpn ovpn_genconfig -u udp://10.145.240.56
+  # docker-compose run --rm openvpn ovpn_initpki
+  # Passphrase: test123
+  openvpn:
+    image: kylemanna/openvpn
+    container_name: openvpn
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./openvpn/config:/etc/openvpn
+    ports:
+      - "1194:1194/udp"
+    networks:
+      - proxy-net
+    restart: unless-stopped
+
+  # Minecraft Server
+  minecraft:
+    image: itzg/minecraft-server
+    container_name: minecraft
+    environment:
+      - EULA=TRUE
+      - MEMORY=2G
+      - TZ=Europe/Berlin
+    volumes:
+      - ./minecraft/data:/data
+    ports:
+      - "25565:25565"
+    networks:
+      - proxy-net
+    restart: unless-stopped
+
+  # WikiJS als Dokumentationssystem
+  # admin@admin.de / admin123
+  wiki:
+    image: requarks/wiki:2
+    container_name: wiki
+    environment:
+      - DB_TYPE=sqlite
+      - TZ=Europe/Berlin
+    volumes:
+      - ./wiki/config:/config
+      - ./wiki/data:/data
+    ports:
+      - "3001:3000"
+    networks:
+      - proxy-net
+    restart: unless-stopped
+
+networks:
+  proxy-net:
+    driver: bridge
