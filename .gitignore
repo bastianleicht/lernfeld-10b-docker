@@ -1,6 +1,10 @@
 *.log
 *.db*
+.idea
+*.zip
+*.gz
 gitea/*
 heimdall/config/php
 heimdall/config/nginx
 heimdall/config/log
+openvpn/config/pki/*
